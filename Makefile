@@ -5,31 +5,45 @@
 #                                                     +:+ +:+         +:+      #
 #    By: sscot <sscot@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/03/03 18:00:28 by sscot             #+#    #+#              #
-#    Updated: 2022/03/03 20:31:16 by sscot            ###   ########.fr        #
+#    Created: 2022/03/11 14:18:23 by sscot             #+#    #+#              #
+#    Updated: 2022/03/11 17:16:35 by sscot            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-all: ft_printf/libftprintf.a client server minitalk.h
+HEADER = minitalk.h
 
+CLIENT = client.c
+SERVER = server.c
 
-server: server.c minitalk.h
-	@cc -Wall -Wextra -Werror server.c ft_printf/libftprintf.a -o $@
+CLIENT_BONUS = client_bonus.c
+SERVER_BONUS = server_bonus.c
 
-client: client.c minitalk.h
-	@cc -Wall -Wextra -Werror client.c ft_printf/libftprintf.a -o $@
+OBJ_CLIENT = $(patsubst %.c,%.o,$(CLIENT))
+OBJ_SERVER = $(patsubst %.c,%.o,$(SERVER))
 
-ft_printf/libftprintf.a:
-	@make -C./ft_printf
+OBJ_CLIENT_BONUS = $(patsubst %.c,%.o,$(CLIENT_BONUS))
+OBJ_SERVER_BONUS = $(patsubst %.c,%.o,$(SERVER_BONUS))
 
+all: server client
+
+server: $(OBJ_SERVER) $(HEADER)
+ cc -Wall -Wextra -Werror server.c -o server
+
+client: $(OBJ_CLIENT) $(HEADER)
+ cc -Wall -Wextra -Werror client.c -o client
+
+bonus: server_bonus client_bonus
+
+server_bonus: $(OBJ_SERVER_BONUS) $(HEADER)
+ cc -Wall -Wextra -Werror server.c -o server_bonus
+
+client_bonus: $(OBJ_CLIENT_BONUS) $(HEADER)
+ cc -Wall -Wextra -Werror client.c -o client_bonus
 
 clean:
-	@make clean -C ./ft_printf
+ rm -f $(OBJ_SERVER) $(OBJ_CLIENT) server client
+ rm -f $(OBJ_SERVER_BONUS) $(OBJ_CLIENT_BONUS) server_bonus client_bonus
 
 fclean: clean
-	@rm -rf server client
-	@make fclean -C ./ft_printf
 
-re: fclean all
-
-.PHONY: all re clean fclean
+re: fclean all bonus

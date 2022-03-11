@@ -1,16 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sscot <sscot@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 14:18:40 by sscot             #+#    #+#             */
-/*   Updated: 2022/03/11 17:16:27 by sscot            ###   ########.fr       */
+/*   Created: 2022/03/11 15:21:12 by sscot             #+#    #+#             */
+/*   Updated: 2022/03/11 17:16:29 by sscot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+void	ft_putnbr(int n)
+{
+	char	c;
+
+	if (n >= 10)
+	{
+		ft_putnbr(n / 10);
+		ft_putnbr(n % 10);
+	}
+	else
+	{
+		c = n + '0';
+		write(1, &c, 1);
+	}
+}
+
+size_t	ft_strlen(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 
 void	ft_putchar_fd(char c, int fd)
 {
