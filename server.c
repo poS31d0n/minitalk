@@ -3,64 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sscot <sscot@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hjanis <hjanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 14:18:40 by sscot             #+#    #+#             */
-/*   Updated: 2022/03/11 17:16:27 by sscot            ###   ########.fr       */
+/*   Created: 2022/03/11 14:13:06 by hjanis            #+#    #+#             */
+/*   Updated: 2022/03/11 14:42:16 by hjanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	ft_putchar_fd(char c, int fd)
+void	ft_putnbr(int n)
 {
-	write(fd, &c, 1);
+	char	c;
+
+	if (n >= 10)
+	{
+		ft_putnbr(n / 10);
+		ft_putnbr(n % 10);
+	}
+	else
+	{
+		c = n + '0';
+		write(1, &c, 1);
+	}
 }
 
-void	ft_handler(int sig, siginfo_t *info, void *context)
+void	ft_putchar_fd(char c, int fd)
 {
-	static int	c_pid = 0;
-	static int	bite = 0;
-	static int	c = 0;
+	write (fd, &c, 1);
+}
 
-	(void)context;
-	if (!c_pid || c_pid != info -> si_pid)
+void	sig_handler(int act)
+{
+	static int	bit;
+	static int	c;
+
+	if (act == SIGUSR1)
+		c += 1 << (7 - bit);
+	bit++;
+	if (bit == 8)
 	{
-		c_pid = info -> si_pid;
-		bite = 0;
+		ft_putchar_fd(c, 1);
+		bit = 0;
 		c = 0;
 	}
-	if (sig == SIGUSR1)
-		c += 1 << (7 - bite);
-	bite++;
-	if (bite == 8)
-	{
-		if (c != 0)
-			ft_putchar_fd(c, 1);
-		else
-			kill(c_pid, SIGUSR2);
-		c = 0;
-		bite = 0;
-	}
-	kill(c_pid, SIGUSR1);
 }
 
 int	main(int argc, char **argv)
 {
-	struct sigaction	a;
+	struct sigaction	action;
 
-	(void)argc;
 	(void)argv;
-	a.sa_flags = SA_SIGINFO;
-	a.sa_sigaction = ft_handler;
-	sigaction(SIGUSR1, &a, 0);
-	sigaction(SIGUSR2, &a, 0);
-	write(1, "PID: ", 6);
-	ft_putnbr(getpid());
-	write(1, "\n", 1);
-	while (1)
+	action.sa_handler = &sig_handler;
+	if (argc == 1)
 	{
-		pause();
+		write(1, "PID: ", 6);
+		ft_putnbr(getpid());
+		write(1, "\n", 1);
+		while (42)
+		{
+			sigaction(SIGUSR1, &action, NULL);
+			sigaction(SIGUSR2, &action, NULL);
+			pause();
+		}
 	}
 	return (0);
 }

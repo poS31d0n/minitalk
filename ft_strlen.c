@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hjanis <hjanis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 14:13:00 by hjanis            #+#    #+#             */
-/*   Updated: 2022/03/11 14:16:43 by hjanis           ###   ########.fr       */
+/*   Created: 2021/10/05 11:52:20 by ctorrek           #+#    #+#             */
+/*   Updated: 2021/10/22 00:06:01 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
-# include <unistd.h>
-# include <signal.h>
-# include <stdlib.h>
+#include "get_next_line.h"
 
-#endif
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
