@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sscot <sscot@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/05 11:52:20 by ctorrek           #+#    #+#             */
-/*   Updated: 2021/10/22 00:06:01 by macbook          ###   ########.fr       */
+/*   Created: 2022/03/11 18:09:22 by sscot             #+#    #+#             */
+/*   Updated: 2022/03/11 18:09:52 by sscot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "minitalk.h"
 
 size_t	ft_strlen(const char *str)
 {
